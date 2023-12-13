@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "871123116806",
+    "project_id": "cosmeto-assig",
+    "storage_bucket": "cosmeto-assig.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871123116806:android:7a94be0aa93a9782f53487",
+        "android_client_info": {
+          "package_name": "com.example.cosmeto.cosmeto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl6AW2ffngOVXoYuKdRDbTp1dNZoPoviA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
