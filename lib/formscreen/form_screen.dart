@@ -15,6 +15,7 @@ class _FormScreenState extends State<FormScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController contact = TextEditingController();
   final TextEditingController address = TextEditingController();
+  final TextEditingController emailEditController = TextEditingController();
 
   final database = FirebaseDatabase.instance;
 
@@ -38,18 +39,86 @@ class _FormScreenState extends State<FormScreen> {
               StreamBuilder(
                   stream: database.ref('users').onValue,
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    }
+                    if (snapshot.data == null) {
+                      return Text("No data available");
+                    }
+
                     print(snapshot.data!.snapshot.value);
                     print(snapshot.data!.snapshot.value.runtimeType);
-                    Map<dynamic, dynamic> _datas=snapshot.data!.snapshot.value as dynamic;
-                    List<dynamic> key=_datas.keys.toList();
-                    List<dynamic> value=_datas.values.toList();
+                    Map<dynamic, dynamic> _datas =
+                        snapshot.data!.snapshot.value as dynamic;
+                    List<dynamic> key = _datas.keys.toList();
+                    List<dynamic> value = _datas.values.toList();
 
                     return ListView.builder(
                       itemCount: value.length,
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
-                      itemBuilder: (context,index){
+                      itemBuilder: (context, index) {
                         return ListTile(
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    await database
+                                        .ref()
+                                        .child('users')
+                                        .child(key[index])
+                                        .remove()
+                                        .then((value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                          content: Text("Deleted")));
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                          content: Text(error.toString())));
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  )),
+                              IconButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              title: Text("Edit data"),
+                                              content: Container(
+                                                height: 400,
+                                                child: Column(
+                                                  children: [
+                                                    TextFormField(
+                                                      controller: emailEditController
+                                                    ),
+                                                    ElevatedButton(
+                                                        onPressed: () async {
+                                                          var datas = {
+                                                            "email": emailEditController.text
+                                                    };
+                                                          await database.ref().child("users").update(datas);
+                                                          Navigator.of(context).pop();
+                                                    },
+                                                        child: Text("Updated"))
+                                                  ],
+                                                ),
+                                              ),
+                                            ));
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.red,
+                                  )),
+
+                            ],
+                          ),
                           title: Text(value[index]['email'].toString()),
                         );
                       },
