@@ -1,4 +1,5 @@
 import 'package:cosmeto/SplashScreen/splashscreen.dart';
+import 'package:cosmeto/firestore_exampke/firestore_example.dart';
 import 'package:cosmeto/formscreen/form_screen.dart';
 import 'package:cosmeto/loginpage/login_screen.dart';
 import 'package:cosmeto/registration/registration_screen.dart';
@@ -10,6 +11,10 @@ class RouteGenerator{
 
     final arg = settings.arguments;
     switch (settings.name) {
+
+
+      case FireStoreExample.routeName:
+        return MaterialPageRoute(builder: (_) => FireStoreExample());
 
       case RegistrationScreen.routeName:
         return MaterialPageRoute(builder: (_) => RegistrationScreen());

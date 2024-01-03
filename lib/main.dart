@@ -1,10 +1,12 @@
 import 'package:cosmeto/SplashScreen/splashscreen.dart';
+import 'package:cosmeto/firestore_exampke/firestore_example.dart';
 import 'package:cosmeto/formscreen/form_screen.dart';
 import 'package:cosmeto/loginpage/login_screen.dart';
 import 'package:cosmeto/registration/registration_screen.dart';
 import 'package:cosmeto/routegenerator/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 
 import 'firebase_options.dart';
 
@@ -23,10 +25,12 @@ class MyApp extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: FormScreen.routeName,
-      onGenerateRoute: RouteGenerator.generateRoute,
-      debugShowCheckedModeBanner: false,
+    return OverlayKit(
+      child: MaterialApp(
+        initialRoute: FireStoreExample.routeName,
+        onGenerateRoute: RouteGenerator.generateRoute,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
